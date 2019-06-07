@@ -1,8 +1,7 @@
 import { app, Component } from 'apprun';
 
 export default class extends Component {
-
-  state = 'Contact'
+  state = 'aside';
 
   view = (state) => {
     return <div>
@@ -13,5 +12,4 @@ export default class extends Component {
   update = [
     ['.', state => state]
   ]
-
 }

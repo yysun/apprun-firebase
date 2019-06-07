@@ -7,6 +7,8 @@
     "reactNamespace": "app",
     "lib": ["dom", "es2015", "es5"],
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "outDir": "../public/esm"
   }
 }
