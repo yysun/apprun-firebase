@@ -1,7 +1,4 @@
 import app from 'apprun';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
 
 app.on('//', route => {
   const menus = document.querySelectorAll('.navbar-nav li');
@@ -36,8 +33,3 @@ export default () => <div class="container">
   </nav>
   <div class="container" id="my-app"></div>
 </div>;
-
-const element = 'my-app';
-new Home().mount(element, { route: '#, #Home'});
-new About().mount(element, { route: '#About'});
-new Contact().mount(element, { route: '#Contact'});
