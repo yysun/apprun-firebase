@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run start:dev & npm run start:server",
     "start:dev": "webpack --mode development -w",
     "start:server": "firebase serve --only hosting",
     "build": "webpack -p --mode production"
@@ -22,16 +21,15 @@
   },
   "homepage": "https://github.com/yysun/apprun-firebase#readme",
   "devDependencies": {
+    "apprun": "^2.23.7",
     "@types/jest": "^25.1.4",
     "jest": "^25.1.0",
     "source-map-loader": "^0.2.4",
     "ts-jest": "^25.2.1",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",
-    "webpack": "^4.42.0",
+    "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
-  "dependencies": {
-    "apprun": "^2.23.3"
-  }
+  "dependencies": {}
 }
