@@ -11,13 +11,13 @@ exports.updateTodo = functions.firestore.document('events/{Id}')
     const { uid, event, data } = dat;
     console.log('===>', uid, event, data);
 
-    data.timestamp = admin.firestore.FieldValue.serverTimestamp();
     const db = admin.firestore();
     db.doc(`events/${context.params.Id}`).delete();
 
     const todos = db.collection('/users/' + uid + '/todos');
     switch (event) {
       case '@create-todo':
+        data.timestamp = admin.firestore.FieldValue.serverTimestamp();
         return todos.add(data);
       case '@update-todo':
         return todos.doc(data.id).update(data);
