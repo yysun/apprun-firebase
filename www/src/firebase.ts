@@ -4,9 +4,17 @@ declare var firebase;
 
 function init(uid) {
   const db = firebase.firestore();
+
+  // if (location.hostname === "localhost") {
+  //   db.settings({
+  //     host: "localhost:8080",
+  //     ssl: false
+  //   });
+  // }
+
   db.collection(`users/${uid}/todos`)
-    .onSnapshot(s => app.run('@show-all-todos', s));
-  app.on('//:', (event, data) => {
+    .onSnapshot(s => app.run('@show-all', s.docs.map(d => ({ id: d.id, ...d.data() }))));
+  app.on('//:', (event, data = {}) => {
     db.collection(`events`).add({ uid, event, data })
   });
 }

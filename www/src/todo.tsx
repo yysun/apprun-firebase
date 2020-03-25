@@ -31,10 +31,10 @@ const clear = () => { app.run('//:', '@delete-all-todo') };
 const search = (state, filter) => ({ ...state, filter });
 
 const Todo = ({todo}) => <li>
-  <input type="checkbox" checked={todo.done} $onclick={[toggle, todo]}></input>
+  <input type="checkbox" checked={todo.done} $onclick={[toggle, todo]}></input>&nbsp;
   <span style={{color: todo.done ? 'green' : 'red'}}>
     {todo.title} <a href='#' $onclick={[remove, todo]}>&#9249;</a></span>
-  <span>({todo.ip})</span>
+  {/* <span>({todo.ip})</span> */}
 </li>;
 
 const view = (state) => {
@@ -68,7 +68,7 @@ const view = (state) => {
 }
 
 const update = {
-  '@show-all-todo': (state, todos) => ({ ...state, todos }),
+  '@show-all': (state, todos) =>  ({ ...state, todos })
 }
 
 export default new Component(state, view, update);
