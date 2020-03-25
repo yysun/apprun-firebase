@@ -24,10 +24,9 @@ function init(uid) {
       db.collection(`events`).where("uid", "==", uid).onSnapshot(snapshot => {
         snapshot.docChanges().forEach(function (change) {
           if (change.type === "added") {
-            if (change.doc.metadata.hasPendingWrites)
-              console.log("pending ", change.doc.data());
-          } else if (change.type === "removed") {
-              console.log("done ", change.doc.data());
+            if (change.doc.metadata.hasPendingWrites) app.run('@saving')
+          // } else if (change.type === "removed") {
+          //   app.run('@done')
           }
         });
       });

@@ -43,7 +43,7 @@ const view = (state) => {
     cursor: 'pointer'
   })
   return <div>
-    <h1>Todo</h1>
+    <h1>Todo <span class="spinner-grow spinner-grow-sm mb-4 d-none" id="spinner"></span></h1>
     <div>
       <span>Show:</span>
       <span> <a style={styles(0)} $onclick={[search, 0]}>All</a></span> |
@@ -60,15 +60,18 @@ const view = (state) => {
       }
     </ul>
     <div>
-      <input placeholder='add todo' onkeyup={keyup} id="new_todo"/>
-      <button $onclick={[add]}>Add</button>
-      <button $onclick={[clear]}>Clear</button>
+      <input placeholder='add todo' onkeyup={keyup} id="new_todo"/>{' '}
+      <button class="btn btn-sm btn-primary" $onclick={[add]}>Add</button>{' '}
+      <button class="btn btn-sm btn-secondary" $onclick={[clear]}>Clear</button>
     </div>
   </div>
 }
 
 const update = {
-  '@show-all': (state, todos) =>  ({ ...state, todos })
+  '@show-all': (state, todos) => ({ ...state, todos }),
+  '@saving': () => {
+    document.getElementById('spinner').classList.remove('d-none');
+  }
 }
 
 export default new Component(state, view, update);
