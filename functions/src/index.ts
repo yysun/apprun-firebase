@@ -5,13 +5,17 @@ admin.initializeApp();
 
 exports.updateTodo = functions.firestore.document('events/{Id}')
   .onWrite((change, context) => {
-    const { uid, event, data } = change.after.data() as any;
+    const dat = change.after.data() as any;
+    if (!dat) return;
 
+    const { uid, event, data } = dat;
     console.log('===>', uid, event, data);
 
+    data.timestamp = admin.firestore.FieldValue.serverTimestamp();
     const db = admin.firestore();
-    const todos = db.collection('/users/' + uid + '/todos');
+    db.doc(`events/${context.params.Id}`).delete();
 
+    const todos = db.collection('/users/' + uid + '/todos');
     switch (event) {
       case '@create-todo':
         return todos.add(data);
@@ -29,4 +33,6 @@ exports.updateTodo = functions.firestore.document('events/{Id}')
         });
       default: return;
     }
+
+
 });
