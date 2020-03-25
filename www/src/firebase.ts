@@ -3,20 +3,42 @@ import app from 'apprun';
 declare var firebase;
 
 function init(uid) {
-  const db = firebase.firestore();
 
-  // if (location.hostname === "localhost") {
-  //   db.settings({
-  //     host: "localhost:8080",
-  //     ssl: false
-  //   });
-  // }
+  firebase.firestore().enablePersistence()
+    .then(function () {
 
-  db.collection(`users/${uid}/todos`)
-    .onSnapshot(s => app.run('@show-all', s.docs.map(d => ({ id: d.id, ...d.data() }))));
-  app.on('//:', (event, data = {}) => {
-    db.collection(`events`).add({ uid, event, data })
-  });
+      const db = firebase.firestore();
+
+      // if (location.hostname === "localhost") {
+      //   db.settings({
+      //     host: "localhost:8080",
+      //     ssl: false
+      //   });
+      // }
+
+      db.collection(`users/${uid}/todos`).orderBy('timestamp')
+        .onSnapshot(snapshot => {
+          app.run('@show-all', snapshot.docs.map(d => ({ id: d.id, ...d.data() })))
+        });
+
+      db.collection(`events`).where("uid", "==", uid).onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(function (change) {
+          if (change.type === "added") {
+            if (change.doc.metadata.hasPendingWrites)
+              console.log("pending ", change.doc.data());
+          } else if (change.type === "removed") {
+              console.log("done ", change.doc.data());
+          }
+        });
+      });
+
+      app.on('//:', (event, data = {}) => {
+        db.collection(`events`).add({ uid, event, data })
+      });
+
+    }).catch(function (err) {
+      console.log(err)
+    })
 }
 
 export default function () {
