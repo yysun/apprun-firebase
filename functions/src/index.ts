@@ -12,27 +12,26 @@ exports.updateTodo = functions.firestore.document('events/{Id}')
     console.log('===>', uid, event, data);
 
     const db = admin.firestore();
-    db.doc(`events/${context.params.Id}`).delete();
+    const del = () => db.doc(`events/${context.params.Id}`).delete();
 
     const todos = db.collection('/users/' + uid + '/todos');
     switch (event) {
       case '@create-todo':
         data.timestamp = admin.firestore.FieldValue.serverTimestamp();
-        return todos.add(data);
+        return todos.add(data).then(()=>del());
       case '@update-todo':
-        return todos.doc(data.id).update(data);
+        return todos.doc(data.id).update(data).then(()=>del());
       case '@delete-todo':
-        return todos.doc(data.id).delete();
+        return todos.doc(data.id).delete().then(()=>del());
       case '@delete-all-todo':
         return todos.get().then(function (querySnapshot) {
           const batch = db.batch();
           querySnapshot.forEach(function (doc) {
             batch.delete(doc.ref);
           });
-          return batch.commit();
+          return batch.commit().then(()=>del());;
         });
       default: return;
     }
-
 
 });
